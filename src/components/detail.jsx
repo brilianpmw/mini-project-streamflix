@@ -4,9 +4,11 @@ import Loading from './loading'
 import '../App.css'
 import Simillar from '../get-api/simillar';
 import filmPop from '../get-api/popular'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
-export default function Detailfilm(props) {
+function Detailfilm(props) {
+
+
 
     let idfilm = props.match.params.idfilm
     let id = idfilm.split('-', 1);
@@ -177,10 +179,11 @@ export default function Detailfilm(props) {
                     <h5 className=" mt-5 text-start">film Popular :</h5>
                 </div>
                 <div className="row justify-content-center">
-
                     {popularfilm}
                 </div>
             </div>
         </>
     )
 }
+
+export default withRouter(Detailfilm)

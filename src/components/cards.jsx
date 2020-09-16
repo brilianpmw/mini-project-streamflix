@@ -20,17 +20,17 @@ const Card = (props) => {
     if (props.rate === 0) {
         rate =
             <>
-                <i class="far fa-star text-warning"></i>{props.rate}
+                <i className="far fa-star text-warning"></i>{props.rate}
             </>
     } else if (props.rate >= 1 && props.rate <= 6) {
         rate =
             <>
-                <i class="fas fa-star-half-alt text-warning"></i>{props.rate}
+                <i className="fas fa-star-half-alt text-warning"></i>{props.rate}
             </>
     } else {
         rate =
             <>
-                <i class="fas fa-star text-warning"></i>{props.rate}
+                <i className="fas fa-star text-warning"></i>{props.rate}
             </>
     }
     return (

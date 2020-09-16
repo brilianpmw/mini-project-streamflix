@@ -3,7 +3,7 @@ import Loading from './components/loading'
 import Search from './components/search'
 import Datafilm from './components/list'
 import Detail from './components/detail'
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Link, Switch, withRouter } from 'react-router-dom';
 
 
 export default function Movie() {
@@ -14,6 +14,7 @@ export default function Movie() {
 
                 <div className="col-12 col-md-4">
                     <Link style={{ textDecoration: 'none' }} to={`/`}><h3 className="text-center judul">StreamFilx</h3> </Link>
+                    {/* <a style={{ textDecoration: 'none' }} href="/"><h3 className="text-center judul">StreamFilx</h3> </a> */}
 
 
                     <p className="text-muted text-center">Tempat streaming film paling asik</p>
@@ -45,10 +46,12 @@ export default function Movie() {
 
             <div className="container mt-5">
                 <BrowserRouter>
-                    <Route path='/' exact strict component={Datafilm} />
-                    <Route path='/detail/:idfilm' strict component={Detail} />
-                    <Route path='/search' strict component={Search} />
-                    <Route path='/search/:idfilm' strict component={Search} />
+                    <Switch>
+
+                        <Route path='/' exact strict component={Datafilm} />
+                        <Route path='/detail/:idfilm' exact strict component={Detail} />
+                        <Route path='/search' exact strict component={Search} />
+                    </Switch>
 
 
                 </BrowserRouter>
