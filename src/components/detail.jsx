@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Detail from '../get-api/detail-film'
+import Loading from './loading'
 import '../App.css'
 import Simillar from '../get-api/simillar';
+import filmPop from '../get-api/popular'
 import { Link } from 'react-router-dom'
 
 export default function Detailfilm(props) {
@@ -11,6 +13,7 @@ export default function Detailfilm(props) {
     const { loading, film } = Detail(id)
 
     let { loadingsimillar, filmsimillar } = Simillar(id, 1)
+    let { loadpopular, popular } = filmPop(1)
     function formatRupiah(angka, prefix) {
         let number_string = angka.replace(/[^,\d]/g, '').toString(),
             split = number_string.split(','),
@@ -28,7 +31,7 @@ export default function Detailfilm(props) {
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
 
-    let genre, bahasa, harga, hargarp, buttonbeli, simillar = 'loading'
+    let genre, bahasa, harga, hargarp, buttonbeli, simillar, popularfilm = 'loading'
     harga = (film.vote_average >= 1 && film.vote_average <= 3) ? 3500 :
         (film.vote_average > 3 && film.vote_average <= 6) ? 8250 :
             (film.vote_average > 6 && film.vote_average <= 8) ? 16350 :
@@ -63,6 +66,10 @@ export default function Detailfilm(props) {
     if (filmsimillar.length !== 0) {
         simillar =
             <>
+                {
+                    loadingsimillar && <Loading />
+
+                }
                 {filmsimillar.map(data => {
                     let id = data.id
                     let title = data.original_title
@@ -90,6 +97,41 @@ export default function Detailfilm(props) {
                 <p className="text-muted  text-center"> tidak ada film yang sama</p>
             </>
     }
+
+    if (popular.length !== 0) {
+
+        popularfilm =
+            <>
+                {
+                    loadpopular && <Loading />
+
+                }
+                {popular.slice(0, 5).map(data => {
+                    let id = data.id
+                    let title = data.original_title
+                    let slug = title.split(' ').join('-')
+                    let url = `${id}-${slug}`
+                    return (
+                        <>
+
+                            <div className="col-12 col-md-2 ">
+                                <div className="card"  >
+                                    <img src={`https://image.tmdb.org/t/p/original/${data.poster_path}`} className="card-img-top" alt={`img ${data.title}`} />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{data.original_title}</h5>
+                                        <Link to={`/detail/${url}`} className="mr-3 btn btn-primary">Beli film</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )
+                })}
+            </>
+
+    }
+
+
+
 
     return (
         <>
@@ -133,7 +175,10 @@ export default function Detailfilm(props) {
                 </div>
                 <div className="row">
                     <h5 className=" mt-5 text-start">film Popular :</h5>
+                </div>
+                <div className="row justify-content-center">
 
+                    {popularfilm}
                 </div>
             </div>
         </>

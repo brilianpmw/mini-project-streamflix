@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import Movie from './movie'
+import Detail from './components/detail'
 
 
 
