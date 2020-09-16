@@ -55,8 +55,22 @@ function Detailfilm(props) {
 
     let arr = [harga]
     hargarp = formatRupiah(arr.toString(), 'Rp')
+    let datatransaksi = JSON.parse(localStorage.getItem('transaksi'))
+
     if (harga > 0) {
-        buttonbeli = <button type="button" className="btn btn-primary">Beli - {hargarp}</button>
+        if (datatransaksi) {
+            if (datatransaksi.some(el => el.idfilm === film.id)) {
+                buttonbeli = <button type="button" onClick={() => { alert('film segera dimulai') }} className="btn btn-success">Lihat film</button>
+
+
+            } else {
+                buttonbeli = <button type="button" onClick={() => { transaksi() }} className="btn btn-primary">Beli - {hargarp}</button>
+
+            }
+        } else {
+            buttonbeli = <button type="button" onClick={() => { transaksi() }} className="btn btn-primary">Beli - {hargarp}</button>
+
+        }
 
     } else {
         buttonbeli = <button type="button" className="btn btn-secondary">segera hadir</button>
@@ -132,6 +146,72 @@ function Detailfilm(props) {
 
     }
 
+    let transaksi = () => {
+        let datatransaksi = localStorage.getItem('transaksi');
+
+        let user = localStorage.getItem('account');
+        let akun = {}
+        if (user === null) {
+            let namauser = prompt('masukan nama kamu : ')
+            let datauser = {
+                nama: namauser,
+                saldo: 100000
+            }
+            localStorage.setItem('account', JSON.stringify(datauser))
+            window.location.reload()
+        } else {
+            akun = JSON.parse(user)
+        }
+
+        if (akun.saldo >= harga) {
+
+            let saldo = akun.saldo - harga
+            let akunupdate = {
+                nama: akun.nama,
+                saldo: saldo
+            }
+            if (datatransaksi !== null) {
+
+                datatransaksi = JSON.parse(datatransaksi)
+                if (datatransaksi.some(el => el.idfilm === film.id)) {
+                    alert(`anda sudah membeli film ini`)
+
+                } else {
+
+                    let newtransaksi = {
+                        idfilm: film.id,
+                        harga: harga
+                    }
+                    datatransaksi.push(newtransaksi)
+                    localStorage.setItem('account', JSON.stringify(akunupdate))
+                    localStorage.setItem('transaksi', JSON.stringify(datatransaksi))
+
+                    alert(`pembelian film ${film.title} berhasul dilakukan `)
+                }
+
+            } else {
+                let saldo = akun.saldo - harga
+                let akunupdate = {
+                    nama: akun.nama,
+                    saldo: saldo
+                }
+                let transaksi = [{
+                    idfilm: film.id,
+                    harga: harga
+                }]
+                localStorage.setItem('account', JSON.stringify(akunupdate))
+                localStorage.setItem('transaksi', JSON.stringify(transaksi))
+                alert(`pembelian film ${film.title} berhasul dilakukan `)
+            }
+
+            window.location.reload()
+
+        } else {
+            alert(`saldo anda kurang.. silahkan top up terlebih dahulu`)
+
+        }
+
+    }
 
 
 

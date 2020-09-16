@@ -11,7 +11,21 @@ const Card = (props) => {
     }
 
 
-    let harga, rate
+    let harga, rate, btnlink
+    let datatransaksi = JSON.parse(localStorage.getItem('transaksi'))
+    if (datatransaksi) {
+        if (datatransaksi.some(el => el.idfilm === props.id)) {
+            btnlink = <Link to={`/detail/${url}`} className="mr-3 btn btn-success">lihat film</Link>
+
+        } else {
+            btnlink = <Link to={`/detail/${url}`} className="mr-3 btn btn-primary">Beli film</Link>
+
+        }
+    } else {
+        btnlink = <Link to={`/detail/${url}`} className="mr-3 btn btn-primary">Beli film</Link>
+
+    }
+
     if (props.harga === '') {
         harga = 'segera hadir'
     } else {
@@ -45,8 +59,8 @@ const Card = (props) => {
                         <hr />
                         <div className="row justify-content-between">
                             <p className="card-text ml-3 ">{harga}</p>
-                            <Link to={`/detail/${url}`} className="mr-3 btn btn-primary">Beli film</Link>
 
+                            {btnlink}
                         </div>
                     </div>
                 </div>

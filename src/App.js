@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Loading from './components/loading'
 import Search from './components/search'
 import Datafilm from './components/list'
@@ -7,6 +7,33 @@ import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 
 
 export default function App() {
+
+  useEffect(() => {
+    document.title = 'Streamflix - tempat streaming film paling asik'
+
+  })
+
+  let user = localStorage.getItem('account');
+  let akun = {}
+
+  if (user === null) {
+    let namauser = prompt('masukan nama kamu : ')
+    let datauser = {
+      nama: namauser,
+      saldo: 100000
+    }
+    localStorage.setItem('account', JSON.stringify(datauser))
+    window.location.reload()
+  } else {
+    akun = JSON.parse(user)
+  }
+
+  let logout = () => {
+    localStorage.removeItem('account')
+    localStorage.removeItem('transaksi')
+
+    // alert('cant')
+  }
 
   return (
     <BrowserRouter>
@@ -33,12 +60,13 @@ export default function App() {
             </div>
             <div className="col-12 col-md-2">
               <a className="nav-link dropdownname dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
+                Hello, {akun.nama}!
                    </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item saldo-navbar" href="#">saldo : 100.000</a>
+                <a className="dropdown-item saldo-navbar" href="#">saldo : {akun.saldo}</a>
                 <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#">keluar</a>
+
+                <a className="dropdown-item" onClick={() => { logout() }} href="/">keluar</a>
               </div>
             </div>
           </div>
@@ -49,10 +77,9 @@ export default function App() {
 
         <div className="container mt-5">
           <Switch>
-
             <Route path='/' exact strict component={Datafilm} />
-            <Route path='/detail/:idfilm' exact strict component={Detail} />
-            <Route path='/search' exact strict component={Search} />
+            <Route path='/detail/:idfilm' strict component={Detail} />
+            <Route path='/search' strict component={Search} />
           </Switch>
 
 
