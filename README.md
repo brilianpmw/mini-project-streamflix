@@ -1,6 +1,6 @@
-# film-search-using-reactJS
+# stream flix mini project
 
-npm init and run!
+npm install and run!
 
 npm start to run development server
 npm build for buid the apps before upload to a hosting
