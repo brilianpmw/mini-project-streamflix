@@ -1,0 +1,19 @@
+.nav-link {
+  text-decoration: none;
+  color: rgb(58, 58, 58);
+}
+
+.nav-link:hover{
+  color: rgb(88, 88, 88);
+}
+
+.saldo-navbar {
+   
+    pointer-events: none;
+    cursor: default;
+
+}
+
+.judul {
+  color: white;
+}
